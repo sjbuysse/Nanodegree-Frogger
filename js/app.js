@@ -68,9 +68,6 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
 };
 
-Player.prototype.width = 101;
-Player.prototype.height = 83;
-
 Player.prototype.update = function(dt){
 };
 
@@ -82,6 +79,23 @@ Player.prototype.render = function(){
 };
 
 Player.prototype.handleInput = function(direction){
+    switch(direction){
+        case 'left':
+            if(this.x > 0)  //If the player hasn't reached the left side of the field
+                this.x -= 101;
+            break;
+        case 'up':
+            if(this.y > (83 + 50)) //If the player hasn't reached the water
+                this.y -= 83;
+            break;
+        case 'right':
+            if(this.x < (504 - 101))  //If the player hasn't reached the right side of the field
+                this.x += 101;
+            break;
+        case 'down':
+            if(this.y < (50 + 83*5)) //If the player hasn't reached the bottom of the field
+                this.y += 83;
+    }
 };
 
 //instantiate player
