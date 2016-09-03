@@ -2,8 +2,8 @@
 var Enemy = function() {
     // Instantiate enemy anywhere in between left and right of the canvas. 
     this.x = randomInt(0, 505); // 505 is canvas.width
-    this.y = setEnemyPostionY(); 
-    this.speed = 505 / randomNumber(1,3); // 505 is canvas.width
+    this.y = getNewEnemyPostionY(); 
+    this.speed = getNewSpeed();
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -12,11 +12,14 @@ var Enemy = function() {
 Enemy.prototype.width = 101; // Width of an enemy (and column)
 Enemy.prototype.height = 83; // Height of the enemy (and rows)
 
-function setEnemyPostionY(){
+function getNewSpeed(){
+    return 505 / randomNumber(1,3); // 505 is canvas.width
+};
+function getNewEnemyPostionY(){
     // return an y-value to place the enemy randomly on the 2nd, 3rd or 4th row;
     // we add 50px to the height because that's where the first row starts
     return 50 + randomInt(1,3) * Enemy.prototype.height;
-}
+};
 
 function randomNumber(min, max){
     //return a double in between min and max
@@ -41,8 +44,9 @@ Enemy.prototype.update = function(dt) {
     if (this.x < ctx.canvas.clientWidth + this.width){
         return;
     }else{
-        this.x = ctx.canvas.clientWidth - this.width;
-        this.y; // Random 1-2-3
+        this.x = 0 - this.width;
+        this.y = getNewEnemyPostionY();
+        this.speed = getNewSpeed();
     }
 };
 
