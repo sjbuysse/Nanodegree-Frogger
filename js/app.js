@@ -63,26 +63,31 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 
 var Player = function() {
-    //this.x = ctx.canvas.clientWidth /2; //middle of canvas
-    //this.y = ctx.canvas.clientHeight; //bottom row
+    this.x = 201; //middle of canvas
+    this.y = 465; //bottom row
     this.sprite = 'images/char-boy.png';
 };
+
+Player.prototype.width = 101;
+Player.prototype.height = 83;
 
 Player.prototype.update = function(dt){
 };
 
 Player.prototype.render = function(){
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    //ctx.fillRect(this.x, this.y, this.width, this.height);
+    // Like the enemies, we have to display the player 73px higher to compensate for the 
+    // transparant part above the actual player image
+    ctx.drawImage(Resources.get(this.sprite), this.x, (this.y - 73 ));
 };
 
 Player.prototype.handleInput = function(direction){
 };
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
+//instantiate player
 var player = new Player;
+
+//instantiate enemies
 var allEnemies = [];
 for(var i = 0; i < 3; i++){
     allEnemies[i] = new Enemy();
