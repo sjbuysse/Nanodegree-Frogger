@@ -63,12 +63,20 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 
 var Player = function() {
-    this.x = 201; //middle of canvas
-    this.y = 465; //bottom row
+    this.setInitialPlayerPosition();
     this.sprite = 'images/char-boy.png';
 };
 
-Player.prototype.update = function(dt){
+Player.prototype.setInitialPlayerPosition = function(){
+    this.x = 201; //middle of canvas
+    this.y = 465; //bottom row
+}
+
+Player.prototype.update = function(){
+    for(var i = 0; i< allEnemies.length; i++){
+        if ( this.x == allEnemies[i].x )
+            this.setInitialPlayerPosition();
+    }
 };
 
 Player.prototype.render = function(){
