@@ -1,4 +1,6 @@
-ToDo:
+I have an `Enemy` and `Player` class. Both classes will have a `width`, `height`, `leftMargin`, and a `topMargin` variable. 
+These variables will be the same for each instance of the classes, does this mean that they have to be stored in the prototype object? (Since we've learned that all commonalities are part of the prototype object)
+So for example `Enemy.prototype.width = 101` and `Player.protoype.width = 70`;
 
-in app.js:
-is it possible to get enemy.width en speed en dergelijke vanuit ctx en resources? Mss door enemy en player te instantieren vanuit engine? 
+I also would like to make a superclass `Character` for the `Enemy` and `Player` subclasses.
+Since both `Enemy` and `Player` have these 4 variables, I'm guessing it's good coding style to make them part of the `Character` class. How would that implementation work? 
