@@ -6,3 +6,6 @@ I also would like to make a superclass `Character` for the `Enemy` and `Player` 
 Since both `Enemy` and `Player` have these 4 variables, I'm guessing it's good coding style to make them part of the `Character` class. How would that implementation work? 
 
 Is it "allright" to instantiate x,y and speed in the update method? Or does that not make sense?
+
+Since both `Player` and `Enemy` have protoype properties `width`, `height`, `leftMargin`, and a `topMargin`, I feel like this could be refactored somehow, but how?
+T
