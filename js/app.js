@@ -1,39 +1,45 @@
-var Character = function(){
-    this.x;
-    this.y;
-    this.sprite;
+// This is the superclass of both Player and Enemy
+var Character = function(sprite, x, y){
+    this.x = x;
+    this.y = y;
+    this.sprite = sprite;
 };
 
-Character.prototype.width,  // Width of a character 
-Character.prototype.height, // Height of a character
-Character.prototype.leftMargin, // transparant margin in the image left of the character sprite
-Character.prototype.topMargin; // transparant margin in the image on top of the character sprite
+Character.prototype.render = function(){
+    //ctx.fillRect(this.x , this.y, this.width, this.height);
+    // We modify the x and y value of the drawn image, to compensate transparant parts of the sprite
+    ctx.drawImage(Resources.get(this.sprite), (this.x - this.leftMargin) , (this.y - this.topMargin ));
+};
 
 var Enemy = function() {
-    Character.call(this);
-    this.speed;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    var sprite = 'images/enemy-bug.png';
+    var x = getNewEnemyPostionX();
+    var y = getNewEnemyPostionY();
+    Character.call(this, sprite, x, y);
+
+    this.speed = getNewEnemySpeed();
 };
 
-Enemy.protoype = Object.create(Character.prototype);
-Enemy.prototype.construct = Enemy;
+//Enemy.prototype right now will 
+Enemy.prototype = Object.create(Character.prototype);
+Enemy.prototype.constructor = Enemy;
 
-Enemy.width = 101; // Width of an enemy
-Enemy.height = 66; // Height of the enemy
-Enemy.leftMargin = 0; // transparant margin in the image left of the enemy sprite
-Enemy.topMargin = 78; // transparant margin in the image on top of the enemy sprite
+Enemy.prototype.width = 96; // Width of an enemy
+Enemy.prototype.height = 65; // Height of the enemy
+Enemy.prototype.leftMargin = 2; // transparant margin in the image left of the enemy sprite
+Enemy.prototype.topMargin = 78; // transparant margin in the image on top of the enemy sprite
 
 
 function getNewEnemySpeed(){
-    // 505 is canvas. So this method will return a speed to make the enemy cross the canvas in 1, 2 or 3 seconds
+    // 505 is canvas. So this method will return a speed 
+    // to make the enemy cross the canvas in either 1, 2 or 3 seconds
     return 505 / randomNumber(1,3); 
 };
 
 function getNewEnemyPostionX(){
-    // return an y-value to place the enemy randomly on the 2nd, 3rd or 4th row;
-    // we add 50px to the height because that's where the first row starts
+    // return an integer value in between 0 and 505 (canvas width)
     return randomInt(0, 505);
 };
 
@@ -61,81 +67,59 @@ function randomInt(min,max){
 
 // Parameter: dt, a time delta between ticks, so the time that has passed since last tick
 Enemy.prototype.update = function(dt) {
-    if(this.x === undefined){
-        this.x = getNewEnemyPostionX();
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+    this.x += this.speed * dt;
+    if (this.x < ctx.canvas.clientWidth + this.width){
+        return;
+    }else{
+        this.x = 0 - this.width;
         this.y = getNewEnemyPostionY();
         this.speed = getNewEnemySpeed();
-    }else{
-        // You should multiply any movement by the dt parameter
-        // which will ensure the game runs at the same speed for
-        // all computers.
-        this.x += this.speed * dt;
-        if (this.x < ctx.canvas.clientWidth + this.width){
-            return;
-        }else{
-            this.x = 0 - this.width;
-            this.y = getNewEnemyPostionY();
-            this.speed = getNewEnemySpeed();
-        }
     }
-};
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    //ctx.fillRect(this.x, this.y, this.width, this.height);
-    // subtract 73px from y, because the enemy sprite needs to be displayed 73px higher, 
-    // since the image has 73px of transparant space above the bug.
-    ctx.drawImage(Resources.get(this.sprite), this.x, (this.y - 73));
 };
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player = function() {
-    this.setInitialPlayerPosition();
-    this.sprite = 'images/char-boy.png';
+var Player = function(x, y) {
+    var sprite = 'images/char-boy.png';
+    Character.call(this, sprite, x, y);
 };
 
-Player.prototype.setInitialPlayerPosition = function(){
-    this.x = 201; //middle of canvas
-    this.y = 465; //bottom row
-}
+Player.prototype = Object.create(Character.prototype);
+Player.prototype.constructor = Player;
 
 Player.prototype.update = function(){
     for(var i = 0; i< allEnemies.length; i++){
-        if ( this.x < allEnemies[i].x + allEnemies[i].width &&
-             this.x + this.width > allEnemies[i].x &&
-             this.y < allEnemies[i].y + allEnemies[i].height &&
-             this.height + this.y > allEnemies[i].y) {
-                // collision detected!
-            }
+        if (this.x < allEnemies[i].x + allEnemies[i].width &&
+           this.x + this.width > allEnemies[i].x &&
+           this.y < allEnemies[i].y + allEnemies[i].height &&
+           this.height + this.y > allEnemies[i].y) {
+               //collision detected!
+               this.x = 218;
+               this.y = 465;
+        }
     }
 };
 
-Player.prototype.width = 70; // Width of an player
-Player.prototype.height = 75; // Height of the enemy
-Player.prototype.leftMargin = 15; // transparant margin in the image left of the Player sprite
-Player.prototype.topMargin = 65; // transparant margin in the image on top of the Player sprite
+Player.prototype.width = 66; // Width of an player
+Player.prototype.height = 75; // Height of the player
+Player.prototype.leftMargin = 18; // transparant margin in the image left of the player sprite
+Player.prototype.topMargin = 64; // transparant margin in the image on top of the player sprite
 
-
-
-Player.prototype.render = function(){
-    ctx.fillRect(this.x + this.leftMargin , this.y, this.width, this.height);
-    // Like the enemies, we have to display the player 73px higher to compensate for the 
-    // transparant part above the actual player image
-    ctx.drawImage(Resources.get(this.sprite), this.x, (this.y - this.topMargin ));
-};
 
 Player.prototype.handleInput = function(direction){
     switch(direction){
         case 'left':
             if(this.x > 0)  //If the player hasn't reached the left side of the field
-                this.x -= 101;
+                this.x -= 101; //101 is width of column
             break;
         case 'up':
             if(this.y > (83 + 50)) //If the player hasn't reached the water
-                this.y -= 83;
+                this.y -= 83; // 83 is height of row
             break;
         case 'right':
             if(this.x < (504 - 101))  //If the player hasn't reached the right side of the field
@@ -147,13 +131,13 @@ Player.prototype.handleInput = function(direction){
     }
 };
 
-//instantiate player
-var player = new Player;
+//instantiate player, 201,465 is middle of bottom row in canvas
+var player = new Player(220,465);
 
 //instantiate enemies
 var allEnemies = [];
 for(var i = 0; i < 3; i++){
-    allEnemies[i] = new Enemy();
+    allEnemies[i] = new Enemy(200, 200, 150);
 }
 
 
