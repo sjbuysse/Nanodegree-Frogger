@@ -56,7 +56,11 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+        if(player.hearts !== 0){
+            win.requestAnimationFrame(main);
+        }else{
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+        }
     }
 
     /* This function does some initial setup that should only occur once,
@@ -80,7 +84,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        //checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -96,6 +100,20 @@ var Engine = (function(global) {
         });
         player.update();
     }
+
+    //function checkCollisions(){
+        //for(var i = 0; i< allEnemies.length; i++){
+            //if (player.x < allEnemies[i].x + allEnemies[i].width &&
+               //player.x + player.width > allEnemies[i].x &&
+               //player.y < allEnemies[i].y + allEnemies[i].height &&
+               //player.height + player.y > allEnemies[i].y) {
+                   ////collision detected!
+                   ////debugger;
+                   //player.x = 218;
+                   //player.y = 465;
+            //}
+        //}
+    //};
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every

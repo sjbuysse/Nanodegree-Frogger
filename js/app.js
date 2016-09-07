@@ -84,24 +84,35 @@ Enemy.prototype.update = function(dt) {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player = function(x, y) {
+var Player = function(x, y, hearts) {
     var sprite = 'images/char-boy.png';
     Character.call(this, sprite, x, y);
+    this.hearts = hearts;
 };
 
 Player.prototype = Object.create(Character.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function(){
+    //check for collisions with enemies
     for(var i = 0; i< allEnemies.length; i++){
         if (this.x < allEnemies[i].x + allEnemies[i].width &&
            this.x + this.width > allEnemies[i].x &&
            this.y < allEnemies[i].y + allEnemies[i].height &&
            this.height + this.y > allEnemies[i].y) {
                //collision detected!
+               this.hearts--;
                this.x = 218;
                this.y = 465;
         }
+    }
+
+    //check if player has reached water
+    //50px is where the water begins, and the water row is 83px high
+    if (this.y < (50+83)){
+        //reached the water!
+        this.x = 218;
+        this.y = 465;
     }
 };
 
@@ -118,8 +129,7 @@ Player.prototype.handleInput = function(direction){
                 this.x -= 101; //101 is width of column
             break;
         case 'up':
-            if(this.y > (83 + 50)) //If the player hasn't reached the water
-                this.y -= 83; // 83 is height of row
+            this.y -= 83; // 83 is height of row
             break;
         case 'right':
             if(this.x < (504 - 101))  //If the player hasn't reached the right side of the field
@@ -132,7 +142,7 @@ Player.prototype.handleInput = function(direction){
 };
 
 //instantiate player, 201,465 is middle of bottom row in canvas
-var player = new Player(220,465);
+var player = new Player(220, 465, 3);
 
 //instantiate enemies
 var allEnemies = [];
