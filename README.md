@@ -1,11 +1,6 @@
-I have an `Enemy` and `Player` class. Both classes will have a `width`, `height`, `leftMargin`, and a `topMargin` variable. 
-These variables will be the same for each instance of the classes, does this mean that they have to be stored in the prototype object? (Since we've learned that all commonalities are part of the prototype object)
-So for example `Enemy.prototype.width = 101` and `Player.protoype.width = 70`;
+Since both `Player` and `Enemy` have protoype properties `width`, `height`, `leftMargin`, and a `topMargin`, I feel like this could be refactored somehow, but how? I also don't want to save them as superclass variables, since that would mean that every instance will need to save these variables
 
-I also would like to make a superclass `Character` for the `Enemy` and `Player` subclasses.
-Since both `Enemy` and `Player` have these 4 variables, I'm guessing it's good coding style to make them part of the `Character` class. How would that implementation work? 
+I want to see the player and bug sprite overlap for a split second before resetting the game, how can I do that?
 
-Is it "allright" to instantiate x,y and speed in the update method? Or does that not make sense?
-
-Since both `Player` and `Enemy` have protoype properties `width`, `height`, `leftMargin`, and a `topMargin`, I feel like this could be refactored somehow, but how?
-T
+There are a few instances where we reset player's position (see player.protoype.update), and I always just set x and y to 218 and 465 respectively. 
+Is there a way to refactor this, and can we refactor this so that we can reset the player to any begin value (say you instantiated a player with x=50), rather than always repeating 218.
