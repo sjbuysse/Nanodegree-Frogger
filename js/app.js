@@ -20,14 +20,15 @@ var Enemy = function() {
 Enemy.protoype = Object.create(Character.prototype);
 Enemy.prototype.construct = Enemy;
 
-Enemy.width = 101; // Width of an enemy (and column)
-Enemy.height = 66; // Height of the enemy (and rows)
+Enemy.width = 101; // Width of an enemy
+Enemy.height = 66; // Height of the enemy
 Enemy.leftMargin = 0; // transparant margin in the image left of the enemy sprite
 Enemy.topMargin = 78; // transparant margin in the image on top of the enemy sprite
 
 
 function getNewEnemySpeed(){
-    return 505 / randomNumber(1,3); // 505 is canvas.width
+    // 505 is canvas. So this method will return a speed to make the enemy cross the canvas in 1, 2 or 3 seconds
+    return 505 / randomNumber(1,3); 
 };
 
 function getNewEnemyPostionX(){
@@ -103,13 +104,17 @@ Player.prototype.setInitialPlayerPosition = function(){
 
 Player.prototype.update = function(){
     for(var i = 0; i< allEnemies.length; i++){
-        if ( this.x == allEnemies[i].x )
-            this.setInitialPlayerPosition();
+        if ( this.x < allEnemies[i].x + allEnemies[i].width &&
+             this.x + this.width > allEnemies[i].x &&
+             this.y < allEnemies[i].y + allEnemies[i].height &&
+             this.height + this.y > allEnemies[i].y) {
+                // collision detected!
+            }
     }
 };
 
-Player.prototype.width = 70; // Width of an player (and column)
-Player.prototype.height = 75; // Height of the enemy (and rows)
+Player.prototype.width = 70; // Width of an player
+Player.prototype.height = 75; // Height of the enemy
 Player.prototype.leftMargin = 15; // transparant margin in the image left of the Player sprite
 Player.prototype.topMargin = 65; // transparant margin in the image on top of the Player sprite
 
