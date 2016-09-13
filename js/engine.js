@@ -56,10 +56,10 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        if(player.hearts !== 0){
+        if(player.hearts > 0){
             win.requestAnimationFrame(main);
         }else{
-            ctx.fillRect(0,0, canvas.width, canvas.height);
+            renderGameOver();
         }
     }
 
@@ -154,8 +154,20 @@ var Engine = (function(global) {
             }
         }
 
+
+        // Draw the amount of lifes a player has left
+        ctx.drawImage(Resources.get('images/Heart.png'),465, 40, (101/3), (171/3));
+        ctx.save();
+        ctx.font = "bold 30px sans-serif";
+        ctx.fillStyle = "white";
+        ctx.lineWidth = 1;
+        ctx.fillText(player.hearts + " X", 410, 83);
+        ctx.strokeText(player.hearts + " X", 410, 83);
+        ctx.restore();
+
         renderEntities();
     }
+
 
     /* This function is called by the render function and is called on each game
      * tick. Its purpose is to then call the render functions you have defined
@@ -170,6 +182,20 @@ var Engine = (function(global) {
         });
 
         player.render();
+    }
+
+    function renderGameOver(){
+        // Draw "Game over" screen
+        ctx.save();
+        ctx.fillStyle = "black";
+        ctx.fillRect(0,0, canvas.width, canvas.height);
+        ctx.font = '40pt sans-serif';
+        ctx.textAlign = "center";
+        ctx.fillStyle = "tomato";
+        ctx.fillText("GAME OVER", (canvas.width / 2), 300);
+        ctx.font = '10pt sans-serif';
+        ctx.fillText("(Also, all your base are belong to us)", (canvas.width / 2), 400);
+        ctx.restore();
     }
 
     /* This function does nothing but it could have been a good place to
@@ -189,7 +215,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 
