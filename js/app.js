@@ -11,6 +11,9 @@ Character.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), (this.x - this.leftMargin) , (this.y - this.topMargin ));
 };
 
+/****
+ * ENEMY CLASS
+ ****/
 var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -22,48 +25,15 @@ var Enemy = function() {
     this.speed = getNewEnemySpeed();
 };
 
-//Enemy.prototype right now will 
+// Add Character.prototype to the prototype chain of Enemy.protoype
 Enemy.prototype = Object.create(Character.prototype);
+// Since we've replaced the default protoype object, we have to add the constructor property again to Enemy.prototype
 Enemy.prototype.constructor = Enemy;
 
 Enemy.prototype.width = 96; // Width of an enemy
 Enemy.prototype.height = 65; // Height of the enemy
 Enemy.prototype.leftMargin = 2; // transparant margin in the image left of the enemy sprite
 Enemy.prototype.topMargin = 78; // transparant margin in the image on top of the enemy sprite
-
-
-function getNewEnemySpeed(){
-    // 505 is canvas. So this method will return a speed 
-    // to make the enemy cross the canvas in either 1, 2 or 3 seconds
-    return 505 / randomNumber(1,3); 
-};
-
-function getNewEnemyPostionX(){
-    // return an integer value in between 0 and 505 (canvas width)
-    return randomInt(0, 505);
-};
-
-function getNewEnemyPostionY(){
-    // return an y-value to place the enemy randomly on the 2nd, 3rd or 4th row
-    // we add 50px to the height because that's where the first row starts
-    // We then multiply randomly 1,2 or 3 with the row height (83) 
-    // and finaly we subtract the transparant margin on top of the enemy image
-    return 50 + randomInt(2,4) * 83 - Enemy.prototype.topMargin;
-};
-
-function randomNumber(min, max){
-    //return a double in between min and max
-    return Math.random() * (max - min) + min;
-};
-
-function randomInt(min,max){
-    // randomInt returns an integer number in between min and max. We could use the Math.round() function
-    // but that would mean that both min and max values only have half the chance of being picked. 
-    // Instead we will increase the interval by 1 and alway round down, 
-    // so the biggest possible value still is max, 
-    // this gives us an even distribution in between min and max. 
-    return Math.floor(Math.random() * (max - min + 1)) + min ;
-};
 
 // Parameter: dt, a time delta between ticks, so the time that has passed since last tick
 Enemy.prototype.update = function(dt) {
@@ -80,10 +50,9 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
+/****
+ * PLAYER CLASS
+ ****/
 var Player = function(x, y, hearts) {
     var sprite = 'images/char-boy.png';
     Character.call(this, sprite, x, y);
@@ -141,6 +110,9 @@ Player.prototype.handleInput = function(direction){
     }
 };
 
+/****
+ * INSTANTIATION
+ ****/
 //instantiate player, 201,465 is middle of bottom row in canvas
 var player = new Player(220, 465, 3);
 
@@ -150,6 +122,46 @@ for(var i = 0; i < 3; i++){
     allEnemies[i] = new Enemy(200, 200, 150);
 }
 
+/****
+ * HELPER FUNCTIONS
+ ****/
+function getNewEnemySpeed(){
+    // 505 is canvas. So this method will return a speed 
+    // to make the enemy cross the canvas in either 1, 2 or 3 seconds
+    return 505 / randomNumber(1,3); 
+};
+
+function getNewEnemyPostionX(){
+    // return an integer value in between 0 and 505 (canvas width)
+    return randomInt(0, 505);
+};
+
+function getNewEnemyPostionY(){
+    // return an y-value to place the enemy randomly on the 2nd, 3rd or 4th row
+    // we add 50px to the height because that's where the first row starts
+    // We then multiply randomly 1,2 or 3 with the row height (83) 
+    // and finaly we subtract the transparant margin on top of the enemy image
+    return 50 + randomInt(2,4) * 83 - Enemy.prototype.topMargin;
+};
+
+function randomNumber(min, max){
+    //return a double in between min and max
+    return Math.random() * (max - min) + min;
+};
+
+function randomInt(min,max){
+    // randomInt returns an integer number in between min and max. We could use the Math.round() function
+    // but that would mean that both min and max values only have half the chance of being picked. 
+    // Instead we will increase the interval by 1 and alway round down, 
+    // so the biggest possible value still is max, 
+    // this gives us an even distribution in between min and max. 
+    return Math.floor(Math.random() * (max - min + 1)) + min ;
+};
+
+
+/****
+ * EVENT LISTENERS
+ ****/
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
