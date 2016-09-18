@@ -6,7 +6,7 @@ var Character = function(sprite, x, y){
 };
 
 Character.prototype.render = function(){
-    //ctx.fillRect(this.x , this.y, this.width, this.height);
+    ctx.fillRect(this.x , this.y, this.width, this.height);
     // We modify the x and y value of the drawn image, to compensate transparant parts of the sprite
     ctx.drawImage(Resources.get(this.sprite), (this.x - this.leftMargin) , (this.y - this.topMargin ));
 };
@@ -80,7 +80,7 @@ Player.prototype.update = function(){
     //50px is where the water begins, and the water row is 83px high
     if (this.y < (50+83)){
         //reached the water!
-        this.x = 218;
+        this.x = 220;
         this.y = 465;
     }
 };
@@ -94,7 +94,7 @@ Player.prototype.topMargin = 64; // transparant margin in the image on top of th
 Player.prototype.handleInput = function(direction){
     switch(direction){
         case 'left':
-            if(this.x > 0)  //If the player hasn't reached the left side of the field
+            if(this.x > this.leftMargin)  //If the player hasn't reached the left side of the field
                 this.x -= 101; //101 is width of column
             break;
         case 'up':
