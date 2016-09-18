@@ -65,13 +65,13 @@ Player.prototype.constructor = Player;
 Player.prototype.update = function(){
     //check for collisions with enemies
     for(var i = 0; i< allEnemies.length; i++){
-        if (this.x < allEnemies[i].x + allEnemies[i].width &&
+        if (this.x  < allEnemies[i].x + allEnemies[i].width &&
            this.x + this.width > allEnemies[i].x &&
            this.y < allEnemies[i].y + allEnemies[i].height &&
            this.height + this.y > allEnemies[i].y) {
                //collision detected!
                this.hearts--;
-               this.x = 218;
+               this.x = 220;
                this.y = 465;
         }
     }
