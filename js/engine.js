@@ -60,7 +60,7 @@ var Engine = (function(global) {
             win.requestAnimationFrame(main);
         }else{
             renderGameOver();
-            setInterval(init,5000);
+            setTimeout(init,5000);
         }
     }
 
@@ -69,6 +69,7 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
+        console.log("here");
         reset();
         lastTime = Date.now();
         main();
