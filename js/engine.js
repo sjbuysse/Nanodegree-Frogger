@@ -60,6 +60,7 @@ var Engine = (function(global) {
             win.requestAnimationFrame(main);
         }else{
             renderGameOver();
+            setInterval(init,5000);
         }
     }
 
@@ -194,16 +195,19 @@ var Engine = (function(global) {
         ctx.fillStyle = "tomato";
         ctx.fillText("GAME OVER", (canvas.width / 2), 300);
         ctx.font = '10pt sans-serif';
-        ctx.fillText("(Also, all your base are belong to us)", (canvas.width / 2), 400);
+        ctx.fillText("Game will reset in 5 seconds", (canvas.width / 2), 400);
+        ctx.fillText("(Also, all your base are belong to us)", (canvas.width / 2), 430);
         ctx.restore();
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
+    /* This function handles game reset states
      */
     function reset() {
-        // noop
+        ctx.save();
+        ctx.fillStyle = "white";
+        ctx.fillRect(0,0, canvas.width, canvas.height);
+        ctx.restore();
+        player.hearts = 3;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
