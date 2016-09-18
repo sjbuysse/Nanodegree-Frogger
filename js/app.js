@@ -57,6 +57,7 @@ var Player = function(x, y, hearts) {
     var sprite = 'images/char-boy.png';
     Character.call(this, sprite, x, y);
     this.hearts = hearts;
+    this.score = 0;
 };
 
 Player.prototype = Object.create(Character.prototype);
@@ -80,6 +81,7 @@ Player.prototype.update = function(){
     //50px is where the water begins, and the water row is 83px high
     if (this.y < (50+83)){
         //reached the water!
+        this.score += 10;
         this.x = 220;
         this.y = 465;
     }

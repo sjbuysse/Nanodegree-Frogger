@@ -166,6 +166,14 @@ var Engine = (function(global) {
         ctx.fillText(player.hearts + " X", 410, 83);
         ctx.strokeText(player.hearts + " X", 410, 83);
         ctx.restore();
+        //draw the player's score
+        ctx.save();
+        ctx.font = "bold 30px sans-serif";
+        ctx.fillStyle = "white";
+        ctx.lineWidth = 1;
+        ctx.fillText("Score: " + player.score, 10, 83);
+        ctx.strokeText("Score: " + player.score, 10, 83);
+        ctx.restore();
 
         renderEntities();
     }
@@ -209,6 +217,9 @@ var Engine = (function(global) {
         ctx.fillRect(0,0, canvas.width, canvas.height);
         ctx.restore();
         player.hearts = 3;
+        player.x = 220;
+        player.y = 465;
+        player.score = 0;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
