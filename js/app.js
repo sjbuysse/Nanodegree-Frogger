@@ -6,7 +6,7 @@ var Character = function(sprite, x, y){
 };
 
 Character.prototype.render = function(){
-    ctx.fillRect(this.x , this.y, this.width, this.height);
+    //ctx.fillRect(this.x , this.y, this.width, this.height);
     // We modify the x and y value of the drawn image, to compensate transparant parts of the sprite
     ctx.drawImage(Resources.get(this.sprite), (this.x - this.leftMargin) , (this.y - this.topMargin ));
 };
