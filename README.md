@@ -1,4 +1,9 @@
-both `Enemy` and `Player` have a `width`, `height`, `leftMargin`, and a `topMargin` properties in their prototype object. 
-Is there a way of refactoring this? Could these properties perhaps be part of the `Character` superclass? How would that implementation work? 
-I have a similar question for the `update` method, that both `Enemy` and `Player` have.
-Both classes have this method. Even though the implementation is completely different, would it make sense to add this method to the `Character` class or not? 
+This is my recreation of the classic frogger game, made as a project for the Udacity Front-End Developer Nanodegree program.
+
+To start the game simply open up index.html
+Use your arrow keys to move around the player and try to reach the water without getting hit by the enemies
+
+Room for improvement:
+Add bonus gems on random locations of the field
+Add the feature to chose a player sprite before the game starts
+...
