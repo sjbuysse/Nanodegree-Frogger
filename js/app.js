@@ -1,8 +1,8 @@
 // This is the superclass of both Player and Enemy
 var Character = function(sprite, x, y){
-    this.x = x;
-    this.y = y;
-    this.sprite = sprite;
+    this.x = x || 0;
+    this.y = y || 0;
+    this.sprite = sprite || "";
 };
 
 Character.prototype.render = function(){
@@ -18,11 +18,12 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     var sprite = 'images/enemy-bug.png';
-    var x = getNewEnemyPostionX();
-    var y = getNewEnemyPostionY();
+    // return an integer value in between 0 and 505 (canvas width)
+    var x = randomInt(0, 505);
+    var y = this.getNewRow();
     Character.call(this, sprite, x, y);
 
-    this.speed = getNewEnemySpeed();
+    this.setNewSpeed();
 };
 
 // Add Character.prototype to the prototype chain of Enemy.protoype
@@ -44,10 +45,25 @@ Enemy.prototype.update = function(dt) {
     if (this.x < ctx.canvas.clientWidth + this.width){
         return;
     }else{
+        //Position enemy left, just outside of the canvas
         this.x = 0 - this.width;
-        this.y = getNewEnemyPostionY();
-        this.speed = getNewEnemySpeed();
+        this.y = this.getNewRow();
+        this.setNewSpeed();
     }
+};
+
+Enemy.prototype.setNewSpeed = function(){
+    // 505 is canvas. So this method will return a speed 
+    // to make the enemy cross the canvas in either 1, 2 or 3 seconds
+    this.speed = 505 / randomNumber(1,3); 
+};
+
+Enemy.prototype.getNewRow = function(){
+    // return a new y-value to place the enemy randomly on the 2nd, 3rd or 4th row
+    // we add 50px to the height because that's where the first row starts
+    // We then multiply randomly 1,2 or 3 with the row height (83) 
+    // and finaly we subtract the transparant margin on top of the enemy image
+    return 50 + randomInt(2,4) * 83 - this.topMargin;
 };
 
 /****
@@ -127,25 +143,6 @@ for(var i = 0; i < 3; i++){
 /****
  * HELPER FUNCTIONS
  ****/
-function getNewEnemySpeed(){
-    // 505 is canvas. So this method will return a speed 
-    // to make the enemy cross the canvas in either 1, 2 or 3 seconds
-    return 505 / randomNumber(1,3); 
-};
-
-function getNewEnemyPostionX(){
-    // return an integer value in between 0 and 505 (canvas width)
-    return randomInt(0, 505);
-};
-
-function getNewEnemyPostionY(){
-    // return an y-value to place the enemy randomly on the 2nd, 3rd or 4th row
-    // we add 50px to the height because that's where the first row starts
-    // We then multiply randomly 1,2 or 3 with the row height (83) 
-    // and finaly we subtract the transparant margin on top of the enemy image
-    return 50 + randomInt(2,4) * 83 - Enemy.prototype.topMargin;
-};
-
 function randomNumber(min, max){
     //return a double in between min and max
     return Math.random() * (max - min) + min;

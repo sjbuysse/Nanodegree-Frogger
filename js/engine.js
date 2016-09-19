@@ -64,12 +64,11 @@ var Engine = (function(global) {
         }
     }
 
-    /* This function does some initial setup that should only occur once,
+    /* This function does some initial setup that will occur with every new game,
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
     function init() {
-        console.log("here");
         reset();
         lastTime = Date.now();
         main();
@@ -102,20 +101,6 @@ var Engine = (function(global) {
         });
         player.update();
     }
-
-    //function checkCollisions(){
-        //for(var i = 0; i< allEnemies.length; i++){
-            //if (player.x < allEnemies[i].x + allEnemies[i].width &&
-               //player.x + player.width > allEnemies[i].x &&
-               //player.y < allEnemies[i].y + allEnemies[i].height &&
-               //player.height + player.y > allEnemies[i].y) {
-                   ////collision detected!
-                   ////debugger;
-                   //player.x = 218;
-                   //player.y = 465;
-            //}
-        //}
-    //};
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
