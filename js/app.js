@@ -1,3 +1,4 @@
+"use strict";
 // This is the superclass of both Player and Enemy
 var Character = function(sprite, x, y){
     this.x = x || 0;
@@ -18,8 +19,15 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     var sprite = 'images/enemy-bug.png';
-    // return an integer value in between 0 and 505 (canvas width)
-    var x = randomInt(0, 505);
+    // We use the following formula to find a randomInteger in between 2 values:
+    // Math.floor(Math.random()*(max-min+1)+min);
+    // returns an integer number in between min and max. We could use the Math.round() function
+    // but that would mean that both min and max values only have half the chance of being picked. 
+    // Instead we will increase the interval by 1 and alway round down, 
+    // so the biggest possible value still is max, 
+    // this gives us an even distribution in between min and max. 
+    // x will be an integer value in between 0 and 505 (canvas width)
+    var x = Math.floor(Math.random() * 506) ;
     var y = this.getNewRow();
     Character.call(this, sprite, x, y);
 
@@ -53,9 +61,17 @@ Enemy.prototype.update = function(dt) {
 };
 
 Enemy.prototype.setNewSpeed = function(){
-    // 505 is canvas. So this method will return a speed 
+    // We use the following formula to find a randomInteger in between 2 values:
+    // Math.floor(Math.random()*(max-min+1)+min);
+    // returns an integer number in between min and max. We could use the Math.round() function
+    // but that would mean that both min and max values only have half the chance of being picked. 
+    // Instead we will increase the interval by 1 and alway round down, 
+    // so the biggest possible value still is max, 
+    // this gives us an even distribution in between min and max. 
+    //
+    // 505 is canvas width. So this method will return a speed 
     // to make the enemy cross the canvas in either 1, 2 or 3 seconds
-    this.speed = 505 / randomNumber(1,3); 
+    this.speed = 505 / (Math.random() * (3 - 1) + 1);
 };
 
 Enemy.prototype.getNewRow = function(){
@@ -63,7 +79,8 @@ Enemy.prototype.getNewRow = function(){
     // we add 50px to the height because that's where the first row starts
     // We then multiply randomly 1,2 or 3 with the row height (83) 
     // and finaly we subtract the transparant margin on top of the enemy image
-    return 50 + randomInt(2,4) * 83 - this.topMargin;
+    return 50 + ( Math.floor(Math.random() * (4 - 2 + 1)) + 2 ) * 83 - this.topMargin;
+     
 };
 
 /****
@@ -81,7 +98,7 @@ Player.prototype.constructor = Player;
 
 Player.prototype.update = function(){
     //check for collisions with enemies
-    for(var i = 0; i< allEnemies.length; i++){
+    for(var i = 0, len = allEnemies.length; i< len; i++){
         if (this.x  < allEnemies[i].x + allEnemies[i].width &&
            this.x + this.width > allEnemies[i].x &&
            this.y < allEnemies[i].y + allEnemies[i].height &&
@@ -139,24 +156,6 @@ var allEnemies = [];
 for(var i = 0; i < 3; i++){
     allEnemies[i] = new Enemy(200, 200, 150);
 }
-
-/****
- * HELPER FUNCTIONS
- ****/
-function randomNumber(min, max){
-    //return a double in between min and max
-    return Math.random() * (max - min) + min;
-};
-
-function randomInt(min,max){
-    // randomInt returns an integer number in between min and max. We could use the Math.round() function
-    // but that would mean that both min and max values only have half the chance of being picked. 
-    // Instead we will increase the interval by 1 and alway round down, 
-    // so the biggest possible value still is max, 
-    // this gives us an even distribution in between min and max. 
-    return Math.floor(Math.random() * (max - min + 1)) + min ;
-};
-
 
 /****
  * EVENT LISTENERS
